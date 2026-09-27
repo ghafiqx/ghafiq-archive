@@ -44,7 +44,7 @@ textarea.input-ios{resize:none;height:80px}
 
 footer{text-align:center;font-size:0.65rem;color:var(--muted);margin-top:2px;width:100%}
 
-/* Custom Cyber Node Tema Hitam Merah untuk Laman 1 (Struktur & Teks Asli 100% Utuh) */
+/* Custom Cyber Node Tema Hitam Merah untuk Laman 1 */
 #p1 .card {
     background: linear-gradient(145deg, #120808, #080303);
     border: 1.5px solid rgba(255, 26, 26, 0.4);
@@ -87,9 +87,92 @@ footer{text-align:center;font-size:0.65rem;color:var(--muted);margin-top:2px;wid
     border-color: var(--red);
     box-shadow: 0 0 12px rgba(255, 26, 26, 0.3), inset 0 0 5px rgba(255, 26, 26, 0.2);
 }
+
+/* Overlay Animasi Loading 1-100% & Efek Blink */
+#loading-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(12, 9, 10, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+#loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.loading-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--red);
+    text-shadow: 0 0 10px rgba(255, 26, 26, 0.6);
+    margin-bottom: 10px;
+    animation: blinkAnim 0.6s infinite alternate;
+}
+@keyframes blinkAnim {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+.loading-bar-container {
+    width: 200px;
+    height: 4px;
+    background: #222;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 26, 26, 0.3);
+}
+.loading-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+    transition: width 0.05s linear;
+}
+
+/* Style Pemutar Musik di Laman 3 */
+.music-player-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(27, 38, 59, 0.5);
+    border: 1px solid var(--navy);
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+.music-info {
+    font-size: 0.75rem;
+    color: #d1d1d6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.music-btn {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
+
+<!-- Overlay Loading Screen -->
+<div id="loading-overlay">
+    <div class="loading-text" id="loading-percentage">0%</div>
+    <div class="loading-bar-container">
+        <div class="loading-bar-fill" id="loading-fill"></div>
+    </div>
+</div>
 
 <!-- LAMAN 1 -->
 <div id="p1" class="page active">
@@ -97,7 +180,7 @@ footer{text-align:center;font-size:0.65rem;color:var(--muted);margin-top:2px;wid
         <div class="avatar-lg"><img src="ghafiq's profile.jpg" onerror="this.style.display='none'"></div>
         <h1 class="profile-name">GHAFIQ AL-SYAID</h1>
         <p class="profile-bio">Kirim pesan rahasia secara anonim di bawah sini.</p>
-        <button class="btn" onclick="goTo('p2')">❤️</button>
+        <button class="btn" onclick="startLoadingTransition()">❤️</button>
     </div>
     <div class="card">
         <div style="font-size:0.85rem;font-weight:700;color:#ff4d4d;margin-bottom:10px">ada yg mo disampein?</div>
@@ -142,6 +225,21 @@ footer{text-align:center;font-size:0.65rem;color:var(--muted);margin-top:2px;wid
         <span style="width:30px"></span>
     </div>
     <div class="card" style="background:var(--partner);border-color:var(--navy)">
+        
+        <!-- Pemutar Musik Audio Player -->
+        <div class="music-player-box">
+            <div class="music-info">
+                <span>🎵</span>
+                <span id="music-status-text">Pamungkas - One Only</span>
+            </div>
+            <button class="music-btn" id="music-toggle-btn" onclick="toggleMusic()">Play</button>
+        </div>
+        <!-- Tag Audio dengan file Pamungkas-one-only.mp3 -->
+        <audio id="bg-audio" loop>
+            <source src="Pamungkas-one-only.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
         <div class="gallery-top">
             <span class="gallery-title">Our Memories</span>
             <span class="gallery-count">1,842 Foto</span>
@@ -158,7 +256,6 @@ footer{text-align:center;font-size:0.65rem;color:var(--muted);margin-top:2px;wid
             <div class="gallery-item"><img src="sayaangggg.jpg" onerror="this.parentElement.style.display='none'"></div>
             <div class="gallery-item"><img src="manissssss.jpg" onerror="this.parentElement.style.display='none'"></div>
             <div class="gallery-item"><img src="lucuuuu.jpg" onerror="this.parentElement.style.display='none'"></div>
-            
         </div>
     </div>
     <footer>tentang kami &copy; 2026</footer>
@@ -170,6 +267,52 @@ function goTo(id){
     document.getElementById(id).classList.add('active');
     document.body.style.background = id==='p1' ? 'var(--bg)' : 'var(--partner)';
     window.scrollTo(0,0);
+}
+
+// Fungsi Transisi Loading 1-100% & Efek Blink
+function startLoadingTransition(){
+    const overlay = document.getElementById('loading-overlay');
+    const percentText = document.getElementById('loading-percentage');
+    const fillBar = document.getElementById('loading-fill');
+    
+    overlay.classList.add('active');
+    let currentPercent = 0;
+    
+    const interval = setInterval(() => {
+        currentPercent += 2;
+        if(currentPercent > 100) currentPercent = 100;
+        
+        percentText.textContent = currentPercent + '%';
+        fillBar.style.width = currentPercent + '%';
+        
+        if(currentPercent === 100){
+            clearInterval(interval);
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                goTo('p2');
+            }, 200);
+        }
+    }, 20);
+}
+
+// Fungsi Kontrol Audio Player
+const audio = document.getElementById('bg-audio');
+const musicBtn = document.getElementById('music-toggle-btn');
+const musicStatus = document.getElementById('music-status-text');
+
+function toggleMusic(){
+    if (audio.paused) {
+        audio.play().then(() => {
+            musicBtn.textContent = 'Pause';
+            musicStatus.textContent = 'Playing...';
+        }).catch(err => {
+            console.log("Audio play blocked/error:", err);
+        });
+    } else {
+        audio.pause();
+        musicBtn.textContent = 'Play';
+        musicStatus.textContent = 'Pamungkas - One Only';
+    }
 }
 </script>
 </body>
