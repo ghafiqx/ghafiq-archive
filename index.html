@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghafiq's Space</title>
+<style>
+:root{--bg:#0c090a;--card:#141012;--maroon:#8B0000;--red:#ff1a1a;--partner:#0d1b2a;--navy:#1b263b;--blue:#0a84ff;--text:#f2f2f2;--muted:#8e8e93}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px;transition:.4s}
+.page{display:none;width:100%;max-width:380px;flex-direction:column;gap:14px;margin:0 auto}
+.page.active{display:flex}
+.card{background:var(--card);border:1px solid rgba(139,0,0,.4);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.5);width:100%}
+.avatar-lg{width:72px;height:72px;margin:0 auto 12px;border-radius:50%;overflow:hidden;border:2px solid var(--red);background:#222}
+.avatar-lg img,.avatar-sm img{width:100%;height:100%;object-fit:cover}
+.media img{width:100%;height:100%;object-fit:contain;background:#111;max-height:320px}
+.profile-name{font-size:1.1rem;font-weight:700;color:#ff4d4d;text-align:center;margin-bottom:4px}
+.profile-bio{font-size:0.8rem;color:var(--muted);text-align:center;margin-bottom:14px}
+.btn{background:linear-gradient(135deg,var(--maroon),#3d0505);color:#ffcccc;border:1px solid var(--red);padding:11px;border-radius:10px;font-size:0.8rem;font-weight:600;cursor:pointer;width:100%;text-align:center}
+.input-group{margin-bottom:10px}
+.input-group label{display:block;font-size:0.7rem;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase}
+.input-ios{width:100%;padding:10px;background:#0c090a;border:1px solid rgba(139,0,0,.6);border-radius:9px;color:var(--text);font-size:0.85rem;outline:none}
+textarea.input-ios{resize:none;height:80px}
+.nav-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:0.5px solid var(--navy);width:100%}
+.back-btn{background:none;border:none;color:var(--blue);font-size:0.95rem;cursor:pointer}
+.tweet-card{background:var(--partner);border:1px solid var(--navy);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;width:100%}
+.thread{display:flex;gap:10px;position:relative}
+.avatar-sm{width:36px;height:36px;border-radius:50%;overflow:hidden;border:1.5px solid var(--blue);background:#111;flex-shrink:0}
+.author .name{font-size:0.85rem;font-weight:700}
+.author .handle{font-size:0.7rem;color:var(--muted)}
+.welcome-box{font-size:0.8rem;line-height:1.4;color:#d1d1d6;margin:6px 0;background:rgba(10,132,255,.06);border-left:3px solid var(--blue);padding:8px;border-radius:0 6px 6px 0}
+.tweet-text{font-size:0.83rem;line-height:1.4;margin:4px 0;outline:none}
+.media{margin-top:8px;border-radius:8px;overflow:hidden;border:0.5px solid var(--navy);background:#000}
+
+/* iOS Gallery Header & Grid Layout (Penuh & Rapi 3 Kolom) */
+.gallery-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.gallery-title{font-size:0.9rem;font-weight:700;color:var(--blue)}
+.gallery-count{font-size:0.7rem;color:var(--muted)}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#000;border-radius:10px;overflow:hidden;border:0.5px solid var(--navy)}
+.gallery-item{background:#111;position:relative;aspect-ratio:1/1;overflow:hidden;cursor:pointer}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:.2s}
+.gallery-item:hover img{transform:scale(1.03)}
+
+footer{text-align:center;font-size:0.65rem;color:var(--muted);margin-top:2px;width:100%}
+
+/* Custom Cyber Node Tema Hitam Merah untuk Laman 1 (Struktur & Teks Asli 100% Utuh) */
+#p1 .card {
+    background: linear-gradient(145deg, #120808, #080303);
+    border: 1.5px solid rgba(255, 26, 26, 0.4);
+    box-shadow: 0 0 25px rgba(139, 0, 0, 0.3), inset 0 0 15px rgba(255, 26, 26, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+#p1 .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+#p1 .avatar-lg {
+    border: 2px solid var(--red);
+    box-shadow: 0 0 15px rgba(255, 26, 26, 0.5);
+}
+#p1 .profile-name {
+    color: #ff3333;
+    text-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+    letter-spacing: 0.5px;
+}
+#p1 .btn {
+    background: linear-gradient(135deg, #8B0000, #400000);
+    border: 1px solid var(--red);
+    box-shadow: 0 0 12px rgba(139, 0, 0, 0.5);
+    transition: 0.2s;
+}
+#p1 .btn:hover {
+    background: var(--red);
+    box-shadow: 0 0 18px var(--red);
+}
+#p1 .input-ios {
+    background: #060303;
+    border: 1px solid rgba(255, 26, 26, 0.4);
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+}
+#p1 .input-ios:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 12px rgba(255, 26, 26, 0.3), inset 0 0 5px rgba(255, 26, 26, 0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- LAMAN 1 -->
+<div id="p1" class="page active">
+    <div class="card">
+        <div class="avatar-lg"><img src="ghafiq's profile.jpg" onerror="this.style.display='none'"></div>
+        <h1 class="profile-name">GHAFIQ AL-SYAID</h1>
+        <p class="profile-bio">Kirim pesan rahasia secara anonim di bawah sini.</p>
+        <button class="btn" onclick="goTo('p2')">❤️</button>
+    </div>
+    <div class="card">
+        <div style="font-size:0.85rem;font-weight:700;color:#ff4d4d;margin-bottom:10px">ada yg mo disampein?</div>
+        <form action="https://formspree.io/f/xljdnqoe" method="POST">
+            <div class="input-group"><label>Kontak (Opsional)</label><input type="text" name="kontak" class="input-ios" placeholder="nickname lu/usn ig"></div>
+            <div class="input-group"><label>Pesan Rahasia</label><textarea name="pesan" class="input-ios" placeholder="Ketik pesan..." required></textarea></div>
+            <button type="submit" class="btn" style="background:var(--maroon);color:#fff">KIRIM PESAN</button>
+        </form>
+    </div>
+    <footer>Ghafiq &copy; 2026</footer>
+</div>
+
+<!-- LAMAN 2 -->
+<div id="p2" class="page">
+    <div class="nav-header">
+        <button class="back-btn" onclick="goTo('p1')">‹ Kembali</button>
+        <span style="font-size:0.9rem;font-weight:600">Special Tweet</span>
+        <span style="width:30px"></span>
+    </div>
+    <div class="tweet-card">
+        <div class="thread">
+            <div class="avatar-sm"><img src="sischa profile.jpg" onerror="this.style.display='none'"></div>
+            <div style="flex:1;min-width:0">
+                <div class="author"><div class="name">ghafiq pemilik hati sischa</div><div class="handle">@tentangkamu</div></div>
+                <div class="welcome-box">lu punyaaaaaa guaaaaaaaa, jangan ada yg naksir dh udah ada guaaaa </div>
+                <div class="tweet-text" contenteditable="true">sengaja dibikinin akun khusus sama ghafiq biar kami ada space berdua wlee wleee :p </div>
+                <div class="media"><img src="cantikku.jpg" onerror="this.style.display='none'"></div>
+            </div>
+        </div>
+
+        <button class="btn" style="background:linear-gradient(135deg,#0a84ff,#0056b3);color:#fff" onclick="goTo('p3')">tentang kami</button>
+    </div>
+    <footer>cha-afiq &copy; 2026</footer>
+</div>
+
+<!-- LAMAN 3 -->
+<div id="p3" class="page">
+    <div class="nav-header">
+        <button class="back-btn" onclick="goTo('p2')">‹ Kembali</button>
+        <span style="font-size:0.9rem;font-weight:600">Kita Berdua</span>
+        <span style="width:30px"></span>
+    </div>
+    <div class="card" style="background:var(--partner);border-color:var(--navy)">
+        <div class="gallery-top">
+            <span class="gallery-title">Our Memories</span>
+            <span class="gallery-count">1,842 Foto</span>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="❤️❤️❤️.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="aku dan kamu.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="foto kami.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="foto kita.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="imuttttt.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="kereeennn.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="lovee.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="lucuuuuu.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="sayaangggg.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="manissssss.jpg" onerror="this.parentElement.style.display='none'"></div>
+            <div class="gallery-item"><img src="lucuuuu.jpg" onerror="this.parentElement.style.display='none'"></div>
+            
+        </div>
+    </div>
+    <footer>Tentang Kami &copy; 2026</footer>
+</div>
+
+<script>
+function goTo(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.body.style.background = id==='p1' ? 'var(--bg)' : 'var(--partner)';
+    window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
